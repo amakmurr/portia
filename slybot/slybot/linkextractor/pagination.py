@@ -31,6 +31,8 @@ class PaginationExtractor(HtmlLinkExtractor):
         else:
             n_items = response_or_htmlpage.headers.get('n_items')
         if n_items is not None:
+            if isinstance(n_items, bytes):
+                n_items = int(n_items.decode('utf-8'))
             self.link_annotation.mark_link(
                 response_or_htmlpage.url, follow=(n_items > 0))
         best = self.link_annotation.best_links_to_follow()
